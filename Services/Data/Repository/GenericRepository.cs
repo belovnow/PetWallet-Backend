@@ -16,12 +16,12 @@ namespace AccountantAppWebAPI
 			dbSet = context.Set<TEntity>();
 		}
 
-		public IEnumerable<TEntity> GetAll()
+		public virtual IEnumerable<TEntity> GetAll()
 		{
 			return dbSet.ToList();
 		}
 
-		public TEntity GetById(object id)
+		public virtual TEntity GetById(object id)
 		{
 			return dbSet.Find(id);
 		}

@@ -4,7 +4,7 @@ namespace AccountantAppWebAPI
 {
 	public interface IModelContext
 	{
-		GenericRepository<Wallet> WalletRepository { get; }
+		WalletRepository WalletRepository { get; }
 
 		GenericRepository<Account> AccountRepository { get; }
 
