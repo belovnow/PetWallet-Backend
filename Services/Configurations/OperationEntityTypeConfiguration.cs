@@ -13,6 +13,11 @@ namespace AccountantAppWebAPI
 				.HasOne<Wallet>()
 				.WithMany(a => a.Operations)
 				.HasForeignKey(a => a.WalletId);
+			
+			builder
+				.HasOne<Account>()
+				.WithMany()
+				.HasForeignKey(a => a.AccountId);
 
 			builder.HasData(
 				new Operation
