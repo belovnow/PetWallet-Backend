@@ -54,8 +54,6 @@ namespace AccountantAppWebAPI
 		[HttpDelete("{id}")]
 		public JsonResult DeleteAccount(int id)
 		{
-			AccountBuilder.CascadeDeleteAccounts(modelContext, id);
-
 			modelContext.AccountRepository.Delete(id);
 			modelContext.AccountRepository.SaveChanges();
 

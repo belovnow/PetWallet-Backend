@@ -54,8 +54,6 @@ namespace AccountantAppWebAPI
 		[HttpDelete("{id}")]
 		public JsonResult DeleteWallet(int id)
 		{
-			WalletBuilder.CascadeDeleteWallets(modelContext, id);
-
 			modelContext.WalletRepository.Delete(id);
 			modelContext.SaveChanges();
 
