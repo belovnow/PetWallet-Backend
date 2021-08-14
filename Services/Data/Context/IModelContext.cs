@@ -8,7 +8,7 @@ namespace AccountantAppWebAPI
 
 		GenericRepository<Account> AccountRepository { get; }
 
-		GenericRepository<Operation> OperationRepository { get; }
+		OperationRepository OperationRepository { get; }
 
 		void SaveChanges();
 
