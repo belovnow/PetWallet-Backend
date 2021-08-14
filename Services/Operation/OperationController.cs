@@ -20,7 +20,11 @@ namespace AccountantAppWebAPI
 		[HttpGet]
 		public JsonResult GetOperations()
 		{
-			var operations = modelContext.OperationRepository.GetAll().ToArray();
+			var operations = modelContext
+				.OperationRepository
+				.GetAll()
+				.OrderByDescending(a => a.Executed)
+				.ToList();
 
 			return new JsonResult(operations);
 		}
@@ -37,7 +41,6 @@ namespace AccountantAppWebAPI
 		public JsonResult SaveOperation(Operation operation)
 		{
 			operation.Executed = DateTime.Now;
-			OperationBuilder.CreateOperation(modelContext, operation);
 
 			modelContext.OperationRepository.Insert(operation);
 			modelContext.OperationRepository.SaveChanges();
@@ -57,8 +60,6 @@ namespace AccountantAppWebAPI
 		[HttpDelete("{id}")]
 		public JsonResult DeleteOperation(int id)
 		{
-			OperationBuilder.DeleteOperation(modelContext, id);
-
 			modelContext.OperationRepository.Delete(id);
 			modelContext.OperationRepository.SaveChanges();
 

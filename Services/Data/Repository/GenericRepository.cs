@@ -26,7 +26,7 @@ namespace AccountantAppWebAPI
 			return dbSet.Find(id);
 		}
 
-		public void Insert(TEntity entity)
+		public virtual void Insert(TEntity entity)
 		{
 			dbSet.Add(entity);
 		}
@@ -37,7 +37,7 @@ namespace AccountantAppWebAPI
 			context.Entry(entity).State = EntityState.Modified;
 		}
 
-		public void Delete(object id)
+		public virtual void Delete(object id)
 		{
 			var existing = dbSet.Find(id);
 			dbSet.Remove(existing);
