@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -20,8 +21,10 @@ namespace AccountantAppWebAPI
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+
 			services.AddDbContext<ApplicationContext>(opt =>
-				opt.UseNpgsql(Configuration.GetConnectionString("ApplicationContext")));
+				opt.UseNpgsql(connectionString));
 
 			services.AddScoped<IModelContext, ModelContext>();
 
