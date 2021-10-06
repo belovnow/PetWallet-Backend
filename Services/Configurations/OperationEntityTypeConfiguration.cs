@@ -10,14 +10,14 @@ namespace AccountantAppWebAPI
 		public void Configure(EntityTypeBuilder<Operation> builder)
 		{
 			builder
-				.HasOne<Wallet>()
-				.WithMany(a => a.Operations)
-				.HasForeignKey(a => a.WalletId);
+				.HasOne(x => x.Wallet)
+				.WithMany()
+				.HasForeignKey(x => x.WalletId);
 			
 			builder
-				.HasOne<Account>()
+				.HasOne(x => x.Account)
 				.WithMany()
-				.HasForeignKey(a => a.AccountId);
+				.HasForeignKey(x => x.AccountId);
 
 			builder.HasData(
 				new Operation

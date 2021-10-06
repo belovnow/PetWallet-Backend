@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Model
+﻿namespace Model
 {
 	public class Wallet : IAccount
 	{
@@ -9,7 +7,5 @@ namespace Model
 		public string Name { get; set; }
 
 		public double Amount { get; set; }
-
-		public List<Operation> Operations { get; set; }
 	}
 }

@@ -26,7 +26,11 @@ namespace AccountantAppWebAPI
 			services.AddDbContext<ApplicationContext>(opt =>
 				opt.UseNpgsql(connectionString));
 
-			services.AddScoped<IModelContext, ModelContext>();
+			services.AddTransient<IWalletService, WalletService>();
+			services.AddTransient<IAccountService, AccountService>();
+			services.AddTransient<IOperationService, OperationService>();
+
+			services.AddAutoMapper(typeof(Startup));
 
 			services.AddControllers();
 

@@ -1,5 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 
@@ -9,55 +10,37 @@ namespace AccountantAppWebAPI
 	[Route("api/wallets")]
 	public class WalletController : ControllerBase
 	{
-		private readonly IModelContext modelContext;
+		private readonly IWalletService walletService;
 
-		public WalletController(IModelContext modelContext)
+		public WalletController(IWalletService walletService)
 		{
-			this.modelContext =
-				modelContext ?? throw new ArgumentNullException(nameof(modelContext));
+			this.walletService = walletService;
 		}
 
 		[HttpGet]
-		public JsonResult GetWallets()
+		public IQueryable<Wallet> GetWallets()
 		{
-			var wallets = modelContext.WalletRepository.GetAll().ToArray();
-
-			return new JsonResult(wallets);
+			return walletService.GetWallets();
 		}
 
 		[HttpGet("{id}")]
-		public ActionResult GetWallet(int id)
+		public Wallet GetWallet(int id)
 		{
-			var wallet = modelContext.WalletRepository.GetById(id);
-
-			return new JsonResult(wallet);
+			return walletService.GetWallet(id);
 		}
 
 		[HttpPost]
-		public JsonResult SaveWallet(Wallet wallet)
+		public async Task<ActionResult> SaveWallet(Wallet wallet)
 		{
-			modelContext.WalletRepository.Insert(wallet);
-			modelContext.SaveChanges();
+			await walletService.CreateWallet(wallet, new CancellationToken(default));
 
-			return new JsonResult(wallet);
-		}
-
-		[HttpPut("{id}")]
-		public JsonResult EditWallet(Wallet wallet)
-		{
-			modelContext.WalletRepository.Update(wallet);
-			modelContext.SaveChanges();
-
-			return new JsonResult(wallet);
+			return Ok(wallet);
 		}
 
 		[HttpDelete("{id}")]
-		public JsonResult DeleteWallet(int id)
+		public async Task DeleteWallet(int id)
 		{
-			modelContext.WalletRepository.Delete(id);
-			modelContext.SaveChanges();
-
-			return new JsonResult(StatusCode(200));
+			await walletService.DeleteWallet(id, new CancellationToken(default));
 		}
 	}
 }

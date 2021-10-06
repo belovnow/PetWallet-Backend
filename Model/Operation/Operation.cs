@@ -12,7 +12,11 @@ namespace Model
 
 		public DateTime Executed { get; set; }
 
+		public Wallet Wallet { get; set; }
+
 		public int WalletId { get; set; }
+
+		public Account Account { get; set; }
 
 		public int AccountId { get; set; }
 	}

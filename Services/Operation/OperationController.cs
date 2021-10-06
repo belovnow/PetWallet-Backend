@@ -1,5 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using AccountantAppWebAPI.ViewModel;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 
@@ -9,61 +12,45 @@ namespace AccountantAppWebAPI
 	[Route("api/operations")]
 	public class OperationController : ControllerBase
 	{
-		private readonly IModelContext modelContext;
+		private readonly IOperationService operationService;
 
-		public OperationController(IModelContext modelContext)
+		private readonly IMapper mapper;
+
+		public OperationController(IOperationService operationService, IMapper mapper)
 		{
-			this.modelContext =
-				modelContext ?? throw new ArgumentNullException(nameof(modelContext));
+			this.operationService = operationService;
+			this.mapper = mapper;
 		}
 
 		[HttpGet]
-		public JsonResult GetOperations()
+		public IQueryable<OperationItemDto> GetOperations()
 		{
-			var operations = modelContext
-				.OperationRepository
-				.GetAll()
-				.OrderByDescending(a => a.Executed)
-				.ToList();
+			var operations = operationService.GetOperations();
 
-			return new JsonResult(operations);
+			return mapper.ProjectTo<OperationItemDto>(operations)
+				.OrderByDescending(op => op.Executed);
 		}
 
 		[HttpGet("{id}")]
-		public JsonResult GetOperation(int id)
+		public Operation GetOperation(int id)
 		{
-			var operation = modelContext.OperationRepository.GetById(id);
-
-			return new JsonResult(operation);
+			return operationService.GetOperation(id);
 		}
 
 		[HttpPost]
-		public JsonResult SaveOperation(Operation operation)
+		public async Task<ActionResult> SaveOperation(Operation operation)
 		{
-			operation.Executed = DateTime.Now;
+			await operationService.CreateOperation(operation, new CancellationToken(default));
 
-			modelContext.OperationRepository.Insert(operation);
-			modelContext.OperationRepository.SaveChanges();
-
-			return new JsonResult(operation);
-		}
-
-		[HttpPut]
-		public JsonResult EditOperation(Operation operation)
-		{
-			modelContext.OperationRepository.Update(operation);
-			modelContext.OperationRepository.SaveChanges();
-
-			return new JsonResult(operation);
+			return Ok(operation);
 		}
 
 		[HttpDelete("{id}")]
-		public JsonResult DeleteOperation(int id)
+		public async Task<ActionResult> DeleteOperation(int id)
 		{
-			modelContext.OperationRepository.Delete(id);
-			modelContext.OperationRepository.SaveChanges();
+			await operationService.DeleteOperation(id, new CancellationToken(default));
 
-			return new JsonResult(StatusCode(200));
+			return Ok();
 		}
 	}
 }

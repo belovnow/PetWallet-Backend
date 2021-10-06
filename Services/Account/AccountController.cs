@@ -1,5 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 
@@ -9,55 +10,39 @@ namespace AccountantAppWebAPI
 	[Route("api/accounts")]
 	public class AccountController : ControllerBase
 	{
-		private readonly IModelContext modelContext;
+		private readonly IAccountService accountService;
 
-		public AccountController(IModelContext modelContext)
+		public AccountController(IAccountService accountService)
 		{
-			this.modelContext =
-				modelContext ?? throw new ArgumentNullException(nameof(modelContext));
+			this.accountService = accountService;
 		}
 
 		[HttpGet]
-		public JsonResult GetAllAccounts()
+		public IQueryable<Account> GetAllAccounts()
 		{
-			var accounts = modelContext.AccountRepository.GetAll().ToArray();
-
-			return new JsonResult(accounts);
+			return accountService.GetAccount();
 		}
 
 		[HttpGet("{id}")]
-		public ActionResult GetAccount(int id)
+		public Account GetAccount(int id)
 		{
-			var account = modelContext.AccountRepository.GetById(id);
-
-			return new JsonResult(account);
+			return accountService.GetAccount(id);
 		}
 
 		[HttpPost]
-		public JsonResult SaveAccount(Account account)
+		public async Task<ActionResult> SaveAccount(Account account)
 		{
-			modelContext.AccountRepository.Insert(account);
-			modelContext.AccountRepository.SaveChanges();
+			await accountService.CreateAccount(account, new CancellationToken(default));
 
-			return new JsonResult(account);
-		}
-
-		[HttpPut("{id}")]
-		public JsonResult EditAccount(Account account)
-		{
-			modelContext.AccountRepository.Update(account);
-			modelContext.AccountRepository.SaveChanges();
-
-			return new JsonResult(account);
+			return Ok(account);
 		}
 
 		[HttpDelete("{id}")]
-		public JsonResult DeleteAccount(int id)
+		public async Task<ActionResult> DeleteAccount(int id)
 		{
-			modelContext.AccountRepository.Delete(id);
-			modelContext.AccountRepository.SaveChanges();
+			await accountService.DeleteAccount(id, new CancellationToken(default));
 
-			return new JsonResult(StatusCode(200));
+			return Ok();
 		}
 	}
 }
