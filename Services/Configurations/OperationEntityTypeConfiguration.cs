@@ -10,14 +10,14 @@ namespace AccountantAppWebAPI
 		public void Configure(EntityTypeBuilder<Operation> builder)
 		{
 			builder
-				.HasOne<Wallet>()
-				.WithMany(a => a.Operations)
-				.HasForeignKey(a => a.WalletId);
+				.HasOne(x => x.Wallet)
+				.WithMany()
+				.HasForeignKey(x => x.WalletId);
 			
 			builder
-				.HasOne<Account>()
+				.HasOne(x => x.Account)
 				.WithMany()
-				.HasForeignKey(a => a.AccountId);
+				.HasForeignKey(x => x.AccountId);
 
 			builder.HasData(
 				new Operation
@@ -25,21 +25,21 @@ namespace AccountantAppWebAPI
 					Id = 1,
 					Amount = 55000,
 					Executed = DateTime.Now.AddDays(-7),
-					Type = OperationType.Income,
+					TypeEnum = OperationTypeEnum.Income,
 					AccountId = 1, WalletId = 3
 				}, new Operation
 				{
 					Id = 2,
 					Amount = 124.36,
 					Executed = DateTime.Now.AddDays(-3),
-					Type = OperationType.Expense,
+					TypeEnum = OperationTypeEnum.Expense,
 					AccountId = 2, WalletId = 2
 				}, new Operation
 				{
 					Id = 3,
 					Amount = 3411.27,
 					Executed = DateTime.Now.AddDays(-1),
-					Type = OperationType.Expense,
+					TypeEnum = OperationTypeEnum.Expense,
 					AccountId = 2, WalletId = 3
 				});
 		}
