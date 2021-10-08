@@ -23,11 +23,11 @@ namespace AccountantAppWebAPI
 		}
 
 		[HttpGet]
-		public IQueryable<OperationItemDto> GetOperations()
+		public IQueryable<OperationDto> GetOperations()
 		{
 			var operations = operationService.GetOperations();
 
-			return mapper.ProjectTo<OperationItemDto>(operations)
+			return mapper.ProjectTo<OperationDto>(operations)
 				.OrderByDescending(op => op.Executed);
 		}
 

@@ -1,6 +1,6 @@
 ﻿namespace Model
 {
-	public enum OperationType
+	public enum OperationTypeEnum
 	{
 		Income,
 		Expense

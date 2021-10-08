@@ -37,16 +37,16 @@ namespace AccountantAppWebAPI
 
 			if (wallet is null) throw new NullReferenceException(nameof(wallet));
 			if (account is null) throw new NullReferenceException(nameof(account));
-			if (operation.Type.ToString() != account.Type.ToString())
-				throw new InvalidDataException(nameof(account.Type)); // возможно стоит поменять тип исключения
+			if (operation.TypeEnum.ToString() != account.Type.ToString())
+				throw new InvalidDataException(nameof(account.Type));
 
-			switch (operation.Type)
+			switch (operation.TypeEnum)
 			{
-				case OperationType.Income:
+				case OperationTypeEnum.Income:
 					wallet.Amount += operation.Amount;
 					account.Amount += operation.Amount;
 					break;
-				case OperationType.Expense:
+				case OperationTypeEnum.Expense:
 					if (operation.Amount > wallet.Amount)
 						throw new InvalidDataException(nameof(wallet.Amount));
 
@@ -54,7 +54,7 @@ namespace AccountantAppWebAPI
 					account.Amount += operation.Amount;
 					break;
 				default:
-					throw new ArgumentException(nameof(operation.Type));
+					throw new ArgumentException(nameof(operation.TypeEnum));
 			}
 
 			await context.Operations.AddAsync(operation, cancellationToken);
@@ -67,13 +67,13 @@ namespace AccountantAppWebAPI
 			var wallet = await context.Wallets.FindAsync(operation.WalletId, cancellationToken);
 			var account = await context.Accounts.FindAsync(operation.AccountId, cancellationToken);
 
-			switch (operation.Type)
+			switch (operation.TypeEnum)
 			{
-				case OperationType.Income:
+				case OperationTypeEnum.Income:
 					wallet.Amount -= operation.Amount;
 					account.Amount -= operation.Amount;
 					break;
-				case OperationType.Expense:
+				case OperationTypeEnum.Expense:
 					wallet.Amount += operation.Amount;
 					account.Amount -= operation.Amount;
 					break;

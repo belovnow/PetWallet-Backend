@@ -6,7 +6,7 @@ namespace Model
 	{
 		public int Id { get; set; }
 
-		public OperationType Type { get; set; }
+		public OperationTypeEnum TypeEnum { get; set; }
 
 		public double Amount { get; set; }
 

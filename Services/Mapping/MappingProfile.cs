@@ -8,11 +8,11 @@ namespace AccountantAppWebAPI.Mapping
 	{
 		public MappingProfile()
 		{
-			CreateMap<Operation, OperationItemDto>()
-				.ForMember(dto => dto.Account, 
+			CreateMap<Operation, OperationDto>()
+				.ForMember(dto => dto.Account,
 					e => e.MapFrom(x => x.Account.Name))
-				.ForMember(dto => dto.Wallet, 
-				e => e.MapFrom(x => x.Wallet.Name));
+				.ForMember(dto => dto.Wallet,
+					e => e.MapFrom(x => x.Wallet.Name));
 		}
 	}
 }

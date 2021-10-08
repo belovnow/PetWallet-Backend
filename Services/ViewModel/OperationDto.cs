@@ -3,7 +3,7 @@ using Microsoft.OpenApi.Models;
 
 namespace AccountantAppWebAPI.ViewModel
 {
-	public class OperationItemDto
+	public class OperationDto
 	{
 		public int Id { get; set; }
 
