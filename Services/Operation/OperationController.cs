@@ -38,7 +38,7 @@ namespace AccountantAppWebAPI
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> SaveOperation(Operation operation)
+		public async Task<Microsoft.AspNetCore.Mvc.ActionResult> SaveOperation(Operation operation)
 		{
 			await operationService.CreateOperation(operation, new CancellationToken(default));
 
@@ -46,7 +46,7 @@ namespace AccountantAppWebAPI
 		}
 
 		[HttpDelete("{id}")]
-		public async Task<ActionResult> DeleteOperation(int id)
+		public async Task<Microsoft.AspNetCore.Mvc.ActionResult> DeleteOperation(int id)
 		{
 			await operationService.DeleteOperation(id, new CancellationToken(default));
 

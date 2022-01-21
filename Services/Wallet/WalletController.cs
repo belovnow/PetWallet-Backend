@@ -30,7 +30,7 @@ namespace AccountantAppWebAPI
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> SaveWallet(Wallet wallet)
+		public async Task<Microsoft.AspNetCore.Mvc.ActionResult> SaveWallet(Wallet wallet)
 		{
 			await walletService.CreateWallet(wallet, new CancellationToken(default));
 

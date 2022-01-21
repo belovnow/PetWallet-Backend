@@ -30,7 +30,7 @@ namespace AccountantAppWebAPI
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> SaveAccount(Account account)
+		public async Task<Microsoft.AspNetCore.Mvc.ActionResult> SaveAccount(Account account)
 		{
 			await accountService.CreateAccount(account, new CancellationToken(default));
 
@@ -38,7 +38,7 @@ namespace AccountantAppWebAPI
 		}
 
 		[HttpDelete("{id}")]
-		public async Task<ActionResult> DeleteAccount(int id)
+		public async Task<Microsoft.AspNetCore.Mvc.ActionResult> DeleteAccount(int id)
 		{
 			await accountService.DeleteAccount(id, new CancellationToken(default));
 
